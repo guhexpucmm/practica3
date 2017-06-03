@@ -11,6 +11,7 @@ import java.sql.SQLException;
  */
 public class DBModelo {
     private static final Logger logger = LoggerFactory.getLogger(DBModelo.class);
+    private final String CREATE_SEQUENCE = "";
     private final String CREATE_TABLE_USUARIO = "CREATE TABLE IF NOT EXISTS USUARIO (\n" +
             "\tID BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,\n" +
             "\tUSERNAME VARCHAR2(255) NOT NULL UNIQUE,\n" +

@@ -15,6 +15,7 @@ public class Articulo implements Serializable {
     private Date fecha;
     private List<Comentario> listaComentarios;
     private List<Etiqueta> listaEtiquetas;
+    private String resumen;
 
     public Articulo() {
     }
@@ -82,6 +83,14 @@ public class Articulo implements Serializable {
 
     public void setListaEtiquetas(List<Etiqueta> listaEtiquetas) {
         this.listaEtiquetas = listaEtiquetas;
+    }
+
+    public String getResumen() {
+        return cuerpo.substring(0, 70);
+    }
+
+    public void setResumen(String resumen) {
+        this.resumen = resumen;
     }
 
     @Override

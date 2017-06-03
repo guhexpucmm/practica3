@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BLOG</title>
+    <link href="../../bootstrap/css/bootstrap.min.css"
+          th:href="@{bootstrap/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">BLOG</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h1 class="panel-title">Articulos creados</h1>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thread>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Cuerpo</th>
+                    <th>Autor</th>
+                    <th>Fecha</th>
+                    <th>Accion</th>
+                </tr>
+            </thread>
+            <tbody>
+            <tr th:each="articulo : ${listaArticulos}">
+                <td th:text="${articulo.titulo}"></td>
+                <td th:text="${articulo.resumen}"></td>
+                <td th:text="${articulo.autor}"></td>
+                <td th:text="${articulo.fecha}"></td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default"><a
+                                th:href="@{ver(articulo=${articulo.id})}">Visualizar</a></button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

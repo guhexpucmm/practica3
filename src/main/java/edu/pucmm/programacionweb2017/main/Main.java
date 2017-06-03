@@ -1,8 +1,12 @@
 package edu.pucmm.programacionweb2017.main;
 
+import edu.pucmm.programacionweb2017.controladora.CrearUsuarioControladora;
+import edu.pucmm.programacionweb2017.controladora.InicioControladora;
+import edu.pucmm.programacionweb2017.controladora.LoginControladora;
 import edu.pucmm.programacionweb2017.dao.impl.DAOUsuarioImpl;
 import edu.pucmm.programacionweb2017.database.DBModelo;
 import edu.pucmm.programacionweb2017.modelo.Usuario;
+import edu.pucmm.programacionweb2017.util.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +26,7 @@ public class Main {
         setBaseDeDatos();
         setArchivosEstaticos();
         setRoutes();
-        bdTest();
+        setUsuario();
     }
 
     public static void setConfiguraciones() {
@@ -44,16 +48,33 @@ public class Main {
 
     public static void setRoutes() {
         logger.info("Especificando rutas");
+
+        get(Path.Web.LOGIN, LoginControladora.paginaLogin);
+        get(Path.Web.INICIO, InicioControladora.paginaInicio);
+        get(Path.Web.CREAR_USUARIO, CrearUsuarioControladora.paginaCrearUsuario);
+        post(Path.Web.CREAR_USUARIO, CrearUsuarioControladora.crearUsuario);
+        setRedirection();
+    }
+
+    public static void setRedirection() {
         get("/", (request, response) -> {
-            return "Hello word";
+            response.redirect(Path.Web.LOGIN);
+            return null;
         });
     }
 
-    public static void bdTest() {
-        logger.info("Realizando pruebas de base de datos...");
-        Usuario usuario = new Usuario("guhex", "Guassastavo", "123456789", true, true);
+    public static void setUsuario() {
+        Usuario usuario = new Usuario(
+                "gustavojoseh",
+                "Gustavo",
+                "123456789",
+                true,
+                true
+        );
+
         usuario.setId(new Long(1));
-        new DAOUsuarioImpl().borrar(usuario);
-        logger.info("Prueba de base de datos realizada.");
+
+        DAOUsuarioImpl daoUsuario = new DAOUsuarioImpl();
+        daoUsuario.insertar(usuario);
     }
 }
