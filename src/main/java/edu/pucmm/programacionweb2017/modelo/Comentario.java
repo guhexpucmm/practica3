@@ -14,8 +14,7 @@ public class Comentario implements Serializable {
     public Comentario() {
     }
 
-    public Comentario(Long id, String comentario, Usuario autor, Articulo articulo) {
-        this.id = id;
+    public Comentario(String comentario, Usuario autor, Articulo articulo) {
         this.comentario = comentario;
         this.autor = autor;
         this.articulo = articulo;
