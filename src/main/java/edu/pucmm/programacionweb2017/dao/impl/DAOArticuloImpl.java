@@ -8,14 +8,14 @@ import edu.pucmm.programacionweb2017.modelo.Etiqueta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gusta on 02-Jun-17.
  */
-public class DAOArticuloImpl extends DAO implements DAOArticulo {
+public class DAOArticuloImpl implements DAOArticulo {
     private static final Logger logger = LoggerFactory.getLogger(DAOArticuloImpl.class);
 
     private final String INSERT = "INSERT INTO ARTICULO (TITULO, CUERPO, AUTOR_ID, FECHA) VALUES (?,?,?,?)";
@@ -28,10 +28,13 @@ public class DAOArticuloImpl extends DAO implements DAOArticulo {
     private final String SELECT_COMENTARIOS = "SELECT C.ID,C.COMENTARIO,C.AUTOR_ID,C.ARTICULO_ID FROM COMENTARIO C LEFT JOIN ARTICULO_COMENTARIOS AC ON C.ID = AC.COMENTARIO_ID AND C.ARTICULO_ID = ?";
     private final String SELECT_ETIQUETAS = "SELECT E.ID,E.ETIQUETA FROM ETIQUETA E LEFT JOIN ARTICULO_ETIQUETAS AE ON E.ID = AE.ETIQUETA_ID LEFT JOIN ARTICULO A ON AE.ARTICULO_ID = ?";
 
-    private DBConexion dbConexion;
+    private Connection connection = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
+    private Statement statement = null;
 
     public DAOArticuloImpl() {
-        dbConexion = new DBConexion();
+
     }
 
     @Override

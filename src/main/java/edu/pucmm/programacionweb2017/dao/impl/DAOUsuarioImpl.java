@@ -6,14 +6,14 @@ import edu.pucmm.programacionweb2017.modelo.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gusta on 03-Jun-17.
  */
-public class DAOUsuarioImpl extends DAO implements DAOUsuario {
+public class DAOUsuarioImpl implements DAOUsuario {
     private static final Logger logger = LoggerFactory.getLogger(DAOUsuarioImpl.class);
 
     private final String INSERT = "INSERT INTO USUARIO (USERNAME, NOMBRE, PASSWORD, ADMINISTRATOR, AUTOR) VALUES (?,?,?,?,?)";
@@ -23,6 +23,11 @@ public class DAOUsuarioImpl extends DAO implements DAOUsuario {
     private final String SELECT_POR_ID = "SELECT ID,USERNAME,NOMBRE,PASSWORD,ADMINISTRATOR,AUTOR FROM USUARIO WHERE ID = ?";
     private final String SELECT_POR_NOMBRE = "";
     private final String SELECT_POR_USUARIO = "";
+
+    private Connection connection = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
+    private Statement statement = null;
 
     @Override
     public void insertar(Usuario usuario) {

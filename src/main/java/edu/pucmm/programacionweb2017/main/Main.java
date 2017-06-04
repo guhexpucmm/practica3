@@ -4,11 +4,13 @@ import edu.pucmm.programacionweb2017.controladora.CrearUsuarioControladora;
 import edu.pucmm.programacionweb2017.controladora.InicioControladora;
 import edu.pucmm.programacionweb2017.controladora.LoginControladora;
 import edu.pucmm.programacionweb2017.dao.impl.DAOUsuarioImpl;
-import edu.pucmm.programacionweb2017.database.DBModelo;
+import edu.pucmm.programacionweb2017.database.DBConexion;
 import edu.pucmm.programacionweb2017.modelo.Usuario;
 import edu.pucmm.programacionweb2017.util.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
 
 import static spark.Spark.*;
 
@@ -17,10 +19,8 @@ import static spark.Spark.*;
  */
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final DBModelo dbModelo = new DBModelo();
 
-    public static void main(String[] args) {
-        logger.info("Iniciando servidor");
+    public static void main(String[] args) throws SQLException {
         logger.info("Iniciando aplicacion web");
         setConfiguraciones();
         setBaseDeDatos();
@@ -35,8 +35,13 @@ public class Main {
     }
 
     public static void setBaseDeDatos() {
-        logger.info("Configurando la base de datos.");
-        dbModelo.crearDatabase();
+        try {
+            logger.info("Configurando la base de datos.");
+            DBConexion dbConexion = new DBConexion();
+            dbConexion.getConexion().close();
+        } catch (SQLException e) {
+            logger.debug("Error al intentar hacer una conexion con la base de datos.");
+        }
     }
 
     public static void setArchivosEstaticos() {

@@ -6,14 +6,14 @@ import edu.pucmm.programacionweb2017.modelo.Comentario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gusta on 03-Jun-17.
  */
-public class DAOComentarioImpl extends DAO implements DAOComentario {
+public class DAOComentarioImpl implements DAOComentario {
     private static final Logger logger = LoggerFactory.getLogger(DAOArticuloImpl.class);
 
     private final String INSERT = "INSERT INTO COMENTARIO (COMENTARIO, AUTOR_ID, ARTICULO_ID) VALUES (?,?,?)";
@@ -21,6 +21,11 @@ public class DAOComentarioImpl extends DAO implements DAOComentario {
     private final String UPDATE = "UPDATE COMENTARIO SET COMENTARIO = ?, AUTOR_ID = ?, ARTICULO_ID = ? WHERE ID = ?";
     private final String SELECT = "SELECT ID,COMENTARIO,AUTOR_ID,ARTICULO_ID FROM COMENTARIO";
     private final String SELECT_POR_ID = "SELECT ID,COMENTARIO,AUTOR_ID,ARTICULO_ID FROM COMENTARIO WHERE ID = ?";
+
+    private Connection connection = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
+    private Statement statement = null;
 
     @Override
     public void insertar(Comentario comentario) {

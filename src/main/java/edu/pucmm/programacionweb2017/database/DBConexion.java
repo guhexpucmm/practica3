@@ -14,21 +14,26 @@ public class DBConexion {
     private final Logger logger = LoggerFactory.getLogger(DBConexion.class);
 
     private final String DRIVER = "org.h2.Driver";
-    private final String DB_NAME = "PRACTICA3";
-    private final String URL = "jdbc:h2:file:./src/main/resources/database/data/" + DB_NAME;
+    private final String DB_NAME = "H2/BLOG";
+    private final int PORT = 9092;
+    private final String URL = "jdbc:h2:tcp://localhost:9092/~/" + DB_NAME;
     private final String USERNAME = "guhex";
     private final String PASSWORD = "123456789";
 
-    public Connection connection;
+    private Connection connection = null;
 
     public Connection getConexion() {
         try {
             Class.forName(DRIVER);
+
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
             return connection;
         } catch (ClassNotFoundException | SQLException e) {
             logger.debug("Error al extraer la conexion de la base de datos.", e);
+            return null;
+        } catch (NullPointerException e) {
+            logger.debug("El servidor no ha sido iniciado.");
             return null;
         }
     }

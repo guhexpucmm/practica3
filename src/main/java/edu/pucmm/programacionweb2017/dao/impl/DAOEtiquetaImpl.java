@@ -6,14 +6,14 @@ import edu.pucmm.programacionweb2017.modelo.Etiqueta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gusta on 03-Jun-17.
  */
-public class DAOEtiquetaImpl extends DAO implements DAOEtiqueta {
+public class DAOEtiquetaImpl implements DAOEtiqueta {
     private static final Logger logger = LoggerFactory.getLogger(DAOArticuloImpl.class);
 
     private final String INSERT = "INSERT INTO ETIQUETA (ETIQUETA) VALUES (?)";
@@ -21,6 +21,11 @@ public class DAOEtiquetaImpl extends DAO implements DAOEtiqueta {
     private final String UPDATE = "UPDATE ETIQUETA SET ETIQUETA = ? WHERE ID = ?";
     private final String SELECT = "SELECT ID,ETIQUETA FROM ETIQUETA";
     private final String SELECT_POR_ID = "SELECT ID,ETIQUETA FROM ETIQUETA WHERE ID = ?";
+
+    private Connection connection = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
+    private Statement statement = null;
 
     @Override
     public void insertar(Etiqueta etiqueta) {
