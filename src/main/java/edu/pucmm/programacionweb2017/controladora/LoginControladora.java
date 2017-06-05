@@ -1,7 +1,10 @@
 package edu.pucmm.programacionweb2017.controladora;
 
+import edu.pucmm.programacionweb2017.modelo.Usuario;
+import edu.pucmm.programacionweb2017.service.UsuarioService;
 import edu.pucmm.programacionweb2017.util.Path;
 import edu.pucmm.programacionweb2017.util.TemplateUtil;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -17,5 +20,23 @@ public class LoginControladora {
         Map<String, Object> model = new HashMap<>();
 
         return TemplateUtil.renderThymeleaf(model, Path.Template.LOGIN);
+    };
+
+    public static Route login = (request, response) -> {
+        QueryParamsMap map = request.queryMap();
+
+        UsuarioService usuarioService = new UsuarioService();
+        Usuario usuario = usuarioService.encontrarPorCuentaUsuario(map.get("usuario").value());
+
+        if (usuario != null) {
+            //Iniciar sesion
+
+            if (map.get("password").value().equals(usuario.getPassword())) {
+                response.redirect("/inicio");
+                return null;
+            }
+        }
+
+        return "Usuario o contrasena incorrecta.";
     };
 }

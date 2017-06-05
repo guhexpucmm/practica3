@@ -55,9 +55,13 @@ public class Main {
         logger.info("Especificando rutas");
 
         get(Path.Web.LOGIN, LoginControladora.paginaLogin);
+        post(Path.Web.LOGIN, LoginControladora.login);
+
         get(Path.Web.INICIO, InicioControladora.paginaInicio);
+
         get(Path.Web.CREAR_USUARIO, CrearUsuarioControladora.paginaCrearUsuario);
         post(Path.Web.CREAR_USUARIO, CrearUsuarioControladora.crearUsuario);
+
         setRedirection();
     }
 

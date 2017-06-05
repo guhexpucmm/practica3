@@ -22,7 +22,7 @@ public class DAOUsuarioImpl implements DAOUsuario {
     private final String SELECT = "SELECT ID,USERNAME,NOMBRE,PASSWORD,ADMINISTRATOR,AUTOR FROM USUARIO";
     private final String SELECT_POR_ID = "SELECT ID,USERNAME,NOMBRE,PASSWORD,ADMINISTRATOR,AUTOR FROM USUARIO WHERE ID = ?";
     private final String SELECT_POR_NOMBRE = "";
-    private final String SELECT_POR_USUARIO = "";
+    private final String SELECT_POR_USUARIO = "SELECT ID,USERNAME,NOMBRE,PASSWORD,ADMINISTRATOR,AUTOR FROM USUARIO WHERE USERNAME = ?";
 
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -247,6 +247,49 @@ public class DAOUsuarioImpl implements DAOUsuario {
 
     @Override
     public Usuario encontrarPorCuentaUsuario(String usuario) {
-        return null;
+        Usuario u = null;
+        try {
+            DBConexion dbConexion = new DBConexion();
+
+            connection = dbConexion.getConexion();
+            preparedStatement = connection.prepareStatement(SELECT_POR_USUARIO);
+            preparedStatement.setString(1, usuario);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                u = new Usuario();
+
+                u.setId(resultSet.getLong("ID"));
+                u.setUsername(resultSet.getString("USERNAME"));
+                u.setNombre(resultSet.getString("NOMBRE"));
+                u.setPassword(resultSet.getString("PASSWORD"));
+                u.setAdministrator(resultSet.getBoolean("ADMINISTRATOR"));
+                u.setAutor(resultSet.getBoolean("AUTOR"));
+            }
+
+            preparedStatement.close();
+            connection.close();
+
+            return u;
+        } catch (SQLException e) {
+            logger.debug("Error al hacer el select.", e);
+            return null;
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.debug("Error al cerrar el prepared statement", e);
+                }
+            }
+
+            if (connection != null)
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.debug("Error al cerrar la conexion de la bd", e);
+                }
+        }
     }
 }

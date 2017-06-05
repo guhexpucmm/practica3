@@ -32,16 +32,23 @@ public class CrearUsuarioControladora {
 
         Usuario usuario = new Usuario();
         usuario.setNombre(map.get("nombre").value());
-        usuario.setUsername(map.get("username").value());
+        usuario.setUsername(map.get("usuario").value());
         usuario.setPassword(map.get("password").value());
         usuario.setAdministrator(Boolean.parseBoolean(map.get("administrator").value()));
         usuario.setAutor(Boolean.parseBoolean(map.get("autor").value()));
 
         UsuarioService usuarioService = new UsuarioService();
-        usuarioService.insertar(usuario);
-        logger.info("Usuario creado");
 
-        response.redirect("/login");
-        return null;
+        if (usuarioService.encontrarPorCuentaUsuario(usuario.getUsername()) == null) {
+            usuarioService.insertar(usuario);
+
+            logger.info("Usuario creado");
+
+            response.redirect("/login");
+
+            return null;
+        } else {
+            return "Usuario ya existe!";
+        }
     };
 }
