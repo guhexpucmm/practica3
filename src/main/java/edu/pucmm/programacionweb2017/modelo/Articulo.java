@@ -20,7 +20,8 @@ public class Articulo implements Serializable {
     public Articulo() {
     }
 
-    public Articulo(String titulo, String cuerpo, Usuario autor, Date fecha, List<Comentario> listaComentarios, List<Etiqueta> listaEtiquetas) {
+    public Articulo(Long id, String titulo, String cuerpo, Usuario autor, Date fecha, List<Comentario> listaComentarios, List<Etiqueta> listaEtiquetas) {
+        this.id = id;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.autor = autor;
@@ -86,7 +87,7 @@ public class Articulo implements Serializable {
     }
 
     public String getResumen() {
-        return cuerpo.substring(0, 70);
+        return cuerpo.substring(0, 70).concat("...");
     }
 
     public void setResumen(String resumen) {

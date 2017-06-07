@@ -15,9 +15,6 @@ import spark.Route;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by gusta on 03-Jun-17.
- */
 public class CrearUsuarioControladora {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 

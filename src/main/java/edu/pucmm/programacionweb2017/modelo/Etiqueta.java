@@ -12,7 +12,8 @@ public class Etiqueta implements Serializable {
     public Etiqueta() {
     }
 
-    public Etiqueta(String etiqueta) {
+    public Etiqueta(Long id, String etiqueta, Articulo articulo) {
+        this.id = id;
         this.etiqueta = etiqueta;
     }
 

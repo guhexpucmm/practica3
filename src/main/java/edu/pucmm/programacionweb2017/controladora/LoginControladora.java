@@ -12,9 +12,6 @@ import spark.Route;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by gusta on 03-Jun-17.
- */
 public class LoginControladora {
     public static Route paginaLogin = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
@@ -30,13 +27,13 @@ public class LoginControladora {
 
         if (usuario != null) {
             //Iniciar sesion
-
             if (map.get("password").value().equals(usuario.getPassword())) {
-                response.redirect("/inicio");
+                response.redirect(Path.Web.INICIO);
                 return null;
             }
         }
 
+        //No se inicio sesion
         return "Usuario o contrasena incorrecta.";
     };
 }

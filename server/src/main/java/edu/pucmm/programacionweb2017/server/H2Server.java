@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-/**
- * Created by gusta on 04-Jun-17.
- */
 public class H2Server {
     private static final Logger logger = LoggerFactory.getLogger(H2Server.class);
 

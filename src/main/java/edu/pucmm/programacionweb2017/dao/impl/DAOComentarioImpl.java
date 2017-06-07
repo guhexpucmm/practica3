@@ -16,11 +16,13 @@ import java.util.List;
 public class DAOComentarioImpl implements DAOComentario {
     private static final Logger logger = LoggerFactory.getLogger(DAOArticuloImpl.class);
 
-    private final String INSERT = "INSERT INTO COMENTARIO (COMENTARIO, AUTOR_ID, ARTICULO_ID) VALUES (?,?,?)";
+    private final String INSERT = "INSERT INTO COMENTARIO (ID,COMENTARIO, AUTOR_ID, ARTICULO_ID) VALUES (?,?,?,?)";
     private final String DELETE = "DELETE FROM COMENTARIO WHERE ID = ? AND COMENTARIO = ? AND AUTOR_ID = ? AND ARTICULO_ID = ?";
     private final String UPDATE = "UPDATE COMENTARIO SET COMENTARIO = ?, AUTOR_ID = ?, ARTICULO_ID = ? WHERE ID = ?";
     private final String SELECT = "SELECT ID,COMENTARIO,AUTOR_ID,ARTICULO_ID FROM COMENTARIO";
     private final String SELECT_POR_ID = "SELECT ID,COMENTARIO,AUTOR_ID,ARTICULO_ID FROM COMENTARIO WHERE ID = ?";
+
+    private final String INSERT_ARTICULO_COMENTARIOS = "INSERT INTO ARTICULO_COMENTARIOS (ID, ARTICULO_ID, COMENTARIO_ID) VALUES (?,?,?)";
 
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -34,9 +36,10 @@ public class DAOComentarioImpl implements DAOComentario {
 
             connection = dbConexion.getConexion();
             preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setString(1, comentario.getComentario());
-            preparedStatement.setLong(2, comentario.getAutor().getId());
-            preparedStatement.setLong(3, comentario.getArticulo().getId());
+            preparedStatement.setLong(1, comentario.getId());
+            preparedStatement.setString(2, comentario.getComentario());
+            preparedStatement.setLong(3, comentario.getAutor().getId());
+            preparedStatement.setLong(4, comentario.getArticulo().getId());
 
             preparedStatement.executeUpdate();
 

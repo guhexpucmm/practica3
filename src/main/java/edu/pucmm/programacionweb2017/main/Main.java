@@ -1,24 +1,29 @@
 package edu.pucmm.programacionweb2017.main;
 
-import edu.pucmm.programacionweb2017.controladora.CrearUsuarioControladora;
-import edu.pucmm.programacionweb2017.controladora.InicioControladora;
-import edu.pucmm.programacionweb2017.controladora.LoginControladora;
-import edu.pucmm.programacionweb2017.dao.impl.DAOUsuarioImpl;
+import edu.pucmm.programacionweb2017.controladora.*;
+import edu.pucmm.programacionweb2017.dao.impl.DAOArticuloImpl;
 import edu.pucmm.programacionweb2017.database.DBConexion;
+import edu.pucmm.programacionweb2017.modelo.Articulo;
+import edu.pucmm.programacionweb2017.modelo.Comentario;
 import edu.pucmm.programacionweb2017.modelo.Usuario;
+import edu.pucmm.programacionweb2017.service.ArticuloService;
+import edu.pucmm.programacionweb2017.service.ComentarioService;
+import edu.pucmm.programacionweb2017.service.UsuarioService;
 import edu.pucmm.programacionweb2017.util.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 import static spark.Spark.*;
 
-/**
- * Created by gusta on 02-Jun-17.
- */
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
+    private static Usuario usuario = null;
+    private static Articulo articulo = null;
+    private static Comentario comentario = null;
 
     public static void main(String[] args) throws SQLException {
         logger.info("Iniciando aplicacion web");
@@ -27,6 +32,15 @@ public class Main {
         setArchivosEstaticos();
         setRoutes();
         setUsuario();
+
+        pruebaArticulos();
+
+        new DAOArticuloImpl().encontrarTodos().stream().forEach(articulo1 -> {
+            System.out.println(articulo1.getResumen());
+            articulo1.getListaComentarios().stream().forEach(comentario1 -> {
+                System.out.println(comentario1.getComentario());
+            });
+        });
     }
 
     public static void setConfiguraciones() {
@@ -62,7 +76,11 @@ public class Main {
         get(Path.Web.CREAR_USUARIO, CrearUsuarioControladora.paginaCrearUsuario);
         post(Path.Web.CREAR_USUARIO, CrearUsuarioControladora.crearUsuario);
 
+        get(Path.Web.VER_ARTICULO, ArticuloControladora.ver);
+
         setRedirection();
+
+        get(Path.Web.NO_ENCONTRADO, NoEncontradoControladora.noEncontrado);
     }
 
     public static void setRedirection() {
@@ -73,7 +91,8 @@ public class Main {
     }
 
     public static void setUsuario() {
-        Usuario usuario = new Usuario(
+        usuario = new Usuario(
+                new Long(1),
                 "gustavojoseh",
                 "Gustavo",
                 "123456789",
@@ -81,9 +100,36 @@ public class Main {
                 true
         );
 
-        usuario.setId(new Long(1));
+        UsuarioService usuarioService = new UsuarioService();
+        usuarioService.insertar(usuario);
+    }
 
-        DAOUsuarioImpl daoUsuario = new DAOUsuarioImpl();
-        daoUsuario.insertar(usuario);
+    public static void pruebaArticulos() {
+        articulo = new Articulo(
+                new Long(1),
+                "Articulo_Prueba",
+                "El dia de hoy fue un dia caluroso y hubo mucha lluvia, pues llovio bastante. Todo estaba lleno de agua, casi ni se podia caminar. Hubo que comprar un bote para poder andar en la ciudad, estaba tan llena de agua que casi ni podia respirar.",
+                usuario,
+                new Date(new java.util.Date().getTime()),
+                null,
+                null
+        );
+
+        ArticuloService articuloService = new ArticuloService();
+        articuloService.insertar(articulo);
+
+        agregarComentarios();
+    }
+
+    public static void agregarComentarios() {
+        comentario = new Comentario(
+                new Long(1),
+                "Muy hermoso este articulo",
+                usuario,
+                articulo
+        );
+
+        ComentarioService comentarioService = new ComentarioService();
+        comentarioService.insertar(comentario);
     }
 }

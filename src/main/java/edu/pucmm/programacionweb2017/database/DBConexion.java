@@ -16,7 +16,8 @@ public class DBConexion {
     private final String DRIVER = "org.h2.Driver";
     private final String DB_NAME = "H2/BLOG";
     private final int PORT = 9092;
-    private final String URL = "jdbc:h2:tcp://localhost:9092/~/" + DB_NAME;
+    private final String URL_SERVIDOR = "jdbc:h2:tcp://localhost:9092/~/" + DB_NAME;
+    private final String URL_EMBEBIDA = "jdbc:h2:~/test";
     private final String USERNAME = "guhex";
     private final String PASSWORD = "123456789";
 
@@ -26,7 +27,7 @@ public class DBConexion {
         try {
             Class.forName(DRIVER);
 
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(URL_SERVIDOR, USERNAME, PASSWORD);
 
             return connection;
         } catch (ClassNotFoundException | SQLException e) {

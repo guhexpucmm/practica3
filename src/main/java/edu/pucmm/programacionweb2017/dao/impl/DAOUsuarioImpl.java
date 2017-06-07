@@ -16,7 +16,7 @@ import java.util.List;
 public class DAOUsuarioImpl implements DAOUsuario {
     private static final Logger logger = LoggerFactory.getLogger(DAOUsuarioImpl.class);
 
-    private final String INSERT = "INSERT INTO USUARIO (USERNAME, NOMBRE, PASSWORD, ADMINISTRATOR, AUTOR) VALUES (?,?,?,?,?)";
+    private final String INSERT = "INSERT INTO USUARIO (ID, USERNAME, NOMBRE, PASSWORD, ADMINISTRATOR, AUTOR) VALUES (?,?,?,?,?,?)";
     private final String DELETE = "DELETE FROM USUARIO WHERE ID = ? AND USERNAME = ? AND NOMBRE = ? AND PASSWORD = ? AND ADMINISTRATOR = ? AND AUTOR = ?";
     private final String UPDATE = "UPDATE USUARIO SET USERNAME = ?, NOMBRE = ?, PASSWORD = ?, ADMINISTRATOR = ?, AUTOR = ? WHERE ID = ?";
     private final String SELECT = "SELECT ID,USERNAME,NOMBRE,PASSWORD,ADMINISTRATOR,AUTOR FROM USUARIO";
@@ -36,11 +36,12 @@ public class DAOUsuarioImpl implements DAOUsuario {
 
             connection = dbConexion.getConexion();
             preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setString(1, usuario.getUsername());
-            preparedStatement.setString(2, usuario.getNombre());
-            preparedStatement.setString(3, usuario.getPassword());
-            preparedStatement.setBoolean(4, usuario.isAdministrator());
-            preparedStatement.setBoolean(5, usuario.isAutor());
+            preparedStatement.setLong(1, usuario.getId());
+            preparedStatement.setString(2, usuario.getUsername());
+            preparedStatement.setString(3, usuario.getNombre());
+            preparedStatement.setString(4, usuario.getPassword());
+            preparedStatement.setBoolean(5, usuario.isAdministrator());
+            preparedStatement.setBoolean(6, usuario.isAutor());
 
             preparedStatement.executeUpdate();
 

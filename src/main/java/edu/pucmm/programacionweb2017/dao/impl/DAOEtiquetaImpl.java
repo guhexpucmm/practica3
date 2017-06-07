@@ -16,11 +16,13 @@ import java.util.List;
 public class DAOEtiquetaImpl implements DAOEtiqueta {
     private static final Logger logger = LoggerFactory.getLogger(DAOArticuloImpl.class);
 
-    private final String INSERT = "INSERT INTO ETIQUETA (ETIQUETA) VALUES (?)";
+    private final String INSERT = "INSERT INTO ETIQUETA (ID,ETIQUETA) VALUES (?,?)";
     private final String DELETE = "DELETE FROM ETIQUETA WHERE ID = ? AND ETIQUETA = ?";
     private final String UPDATE = "UPDATE ETIQUETA SET ETIQUETA = ? WHERE ID = ?";
     private final String SELECT = "SELECT ID,ETIQUETA FROM ETIQUETA";
     private final String SELECT_POR_ID = "SELECT ID,ETIQUETA FROM ETIQUETA WHERE ID = ?";
+
+    private final String INSERT_ARTICULO_ETIQUETAS = "INSERT INTO ARTICULO_ETIQUETAS (ID, ARTICULO_ID, ETIQUETA_ID) VALUES (?,?,?)";
 
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -34,7 +36,8 @@ public class DAOEtiquetaImpl implements DAOEtiqueta {
 
             connection = dbConexion.getConexion();
             preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setString(1, etiqueta.getEtiqueta());
+            preparedStatement.setLong(1, etiqueta.getId());
+            preparedStatement.setString(2, etiqueta.getEtiqueta());
 
             preparedStatement.executeUpdate();
 
